@@ -1,95 +1,84 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { Background, Container, ContainerTitle, Footer, FooterTitle, HeartImage, PageTitle, Subtitle, TextContainer, TogetherTimeText } from "@/styles/index";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Countdown } from "./components/Countdown";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const res = await fetch('/api/images');
+      const data = await res.json();
+      setImages(data);
+    };
+
+    loadImages();
+  }, []);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 7, // Configuração padrão para telas grandes
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: 'ease-in-out',
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5, // Para telas entre 768px e 1024px
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3, // Para telas entre 480px e 768px
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2, // Para telas menores que 480px
+        },
+      },
+    ],
+  };
+
+
+  return (
+    <Background>
+      <PageTitle>
+        Álbum de memórias
+      </PageTitle>
+      <Container>
+        <ContainerTitle>
+          Diego + Bianca
+        </ContainerTitle>
+        <TextContainer>
+          <Countdown />
+          <TogetherTimeText>
+            Juntos desde 20 de outubro de 2024
+          </TogetherTimeText>
+        </TextContainer>
+        <Subtitle>Para sempre lembrar que te amo mais do que ontem, mas nunca mais do que amanhã</Subtitle>
+      </Container>
+      <Footer>
+        <FooterTitle>"As pessoas que amamos nunca desaparecem. Elas vivem em nossos corações e na nossa memória." — Albus Dumbledore.</FooterTitle>
+        <Slider {...settings}>
+          {images.map((src, index) => (
+            <div key={index} style={{ height: '100%' }}>
+              <HeartImage src={src} alt={`Imagem ${index + 1}`} />
+            </div>
+          ))}
+        </Slider>
+      </Footer>
+    </Background>
   );
 }
