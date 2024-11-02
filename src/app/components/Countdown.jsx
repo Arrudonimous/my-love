@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import calcDate from '@/helpers/calcDate';
-import { CountDownContainer, CountdownNumber } from '@/styles';
+import calcDate from '../../helpers/calcDate';
+import { CountDownContainer, CountdownNumber } from '../../styles/index';
 
-export const Countdown = () => {
+export function Countdown () {
   const [currentDate, setCurrentDate] = useState(calcDate());
 
   useEffect(() => {

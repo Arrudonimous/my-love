@@ -1,8 +1,10 @@
 "use client";
-import { Background, Container, ContainerTitle, Footer, FooterTitle, HeartImage, PageTitle, Subtitle, TextContainer, TogetherTimeText } from "@/styles/index";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Background, Container, ContainerTitle, Footer, FooterTitle, HeartImage, PageTitle, Subtitle, TextContainer, TogetherTimeText } from "../styles/index";
+
 import { Countdown } from "./components/Countdown";
 import { useState, useEffect } from "react";
 
